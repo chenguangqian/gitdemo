@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xsi:schemaLocation="
+ http://www.springframework.org/schema/beans
+ http://www.springframework.org/schema/beans/spring-beans.xsd
+ http://www.springframework.org/schema/mvc
+ http://www.springframework.org/schema/mvc/spring-mvc.xsd
+ http://www.springframework.org/schema/context
+ http://www.springframework.org/schema/context/spring-context.xsd">
+ 
+ 
+ 	<!-- 开启注解驱动 -->
+	<mvc:annotation-driven >	
+		<mvc:message-converters>
+ 			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+ 				<constructor-arg value="utf-8"></constructor-arg>
+ 			</bean>
+ 			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	
+	<!-- 控制器扫描器 -->
+	<context:component-scan base-package="com.ssm35.controller"></context:component-scan>
+	
+	<!-- 视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	</bean>
+	
+	<!-- 上传配置 id必须使用multipartResolver -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	<!-- 基本信息配置   上传数据大小 -->
+	</bean>
+</beans>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:context="http://www.springframework.org/schema/mvc" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+ http://www.springframework.org/schema/beans
+ http://www.springframework.org/schema/beans/spring-beans.xsd
+ http://www.springframework.org/schema/mvc
+ http://www.springframework.org/schema/mvc/spring-mvc.xsd
+ http://www.springframework.org/schema/aop
+ http://www.springframework.org/schema/aop/spring-aop.xsd
+  http://www.springframework.org/schema/tx
+ http://www.springframework.org/schema/tx/spring-tx.xsd
+  http://www.springframework.org/schema/context
+ http://www.springframework.org/schema/context/spring-context.xsd">
+ 
+ 		<!-- 事务管理器 -->
+		<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+			<property name="dataSource" ref="dataSource"></property>
+		</bean>
+		
+		<!-- 配置通知 -->
+		<tx:advice id="myadvice" transaction-manager="transactionManager">
+			<tx:attributes>
+				<!-- 如何处理事务 -->
+			<tx:method name="get*" propagation="SUPPORTS" read-only="true" />
+			<tx:method name="sel*" propagation="SUPPORTS" read-only="true" />
+			<!-- 修改 删除 增加 -->
+			<tx:method name="ins*" propagation="REQUIRED" />
+			<tx:method name="del*" propagation="REQUIRED" />
+			<tx:method name="upd*" propagation="REQUIRED" />
+			</tx:attributes>
+		</tx:advice>
+		
+	<!-- aop 告诉事务应该管理那些义务 -->
+	<aop:config>
+		<!-- 定义切面 -->
+		<aop:pointcut expression="execution(* com.ssm35.mapper.*.*(..))"
+			id="cut" />
+		<!-- 对象映射 -->
+		<aop:advisor advice-ref="myadvice" pointcut-ref="cut"/>
+	</aop:config>
+		
+		
+		
+		
+ </beans>
